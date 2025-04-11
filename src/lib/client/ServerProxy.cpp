@@ -394,7 +394,7 @@ void ServerProxy::flushCompressedMouse()
 void ServerProxy::sendInfo(const ClientInfo &info)
 {
   LOG((CLOG_DEBUG1 "sending info shape=%d,%d %dx%d", info.m_x, info.m_y, info.m_w, info.m_h));
-  ProtocolUtil::writef(m_stream, kMsgDInfo, info.m_x, info.m_y, info.m_w, info.m_h, 0, info.m_mx, info.m_my);
+  ProtocolUtil::writef(m_stream, kMsgDInfoBegin, info.m_x, info.m_y, info.m_w, info.m_h, 0, info.m_mx, info.m_my);
 }
 
 KeyID ServerProxy::translateKey(KeyID id) const

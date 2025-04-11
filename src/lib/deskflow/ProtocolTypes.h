@@ -22,9 +22,10 @@
 // 1.6:  adds clipboard streaming
 // 1.7   adds security input notifications
 // 1.8   adds language synchronization functionality
+// 1.9   adds support for polygonal client shapes
 // NOTE: with new version, deskflow minor version should increment
 static const int16_t kProtocolMajorVersion = 1;
-static const int16_t kProtocolMinorVersion = 8;
+static const int16_t kProtocolMinorVersion = 9;
 
 // default contact port number
 static const uint16_t kDefaultPort = 24800;
@@ -266,13 +267,11 @@ extern const char *const kMsgDMouseWheel1_0;
 // identifier.
 extern const char *const kMsgDClipboard;
 
-// client data:  secondary -> primary
+// client data begin:  secondary -> primary
 // $1 = coordinate of leftmost pixel on secondary screen,
 // $2 = coordinate of topmost pixel on secondary screen,
-// $3 = width of secondary screen in pixels,
-// $4 = height of secondary screen in pixels,
-// $5 = size of warp zone, (obsolete)
-// $6, $7 = the x,y position of the mouse on the secondary screen.
+// $3 = size of warp zone, (obsolete)
+// $4, $5 = the x,y position of the mouse on the secondary screen.
 //
 // the secondary screen must send this message in response to the
 // kMsgQInfo message.  it must also send this message when the
@@ -280,7 +279,18 @@ extern const char *const kMsgDClipboard;
 // should ignore any kMsgDMouseMove messages until it receives a
 // kMsgCInfoAck in order to prevent attempts to move the mouse off
 // the new screen area.
-extern const char *const kMsgDInfo;
+extern const char *const kMsgDInfoBegin;
+
+// monitor shape data: secondary -> primary
+// $1 = top edge coordinate
+// $2 = right edge coordinate
+// $3 = bottom edge coordinate
+// $4 = left edge coordinate
+// $5 = is_primary
+extern const char *const kMsgDMonitorShape;
+
+// client data end
+extern const char *const kMsgDInfoEnd;
 
 // set options:  primary -> secondary
 // client should set the given option/value pairs.  $1 = option/value

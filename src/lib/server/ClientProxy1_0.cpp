@@ -161,7 +161,7 @@ bool ClientProxy1_0::parseHandshakeMessage(const uint8_t *code)
     // discard no-ops
     LOG((CLOG_DEBUG2 "no-op from", getName().c_str()));
     return true;
-  } else if (memcmp(code, kMsgDInfo, 4) == 0) {
+  } else if (memcmp(code, kMsgDInfoBegin, 4) == 0) {
     // future messages get parsed by parseMessage
     m_parser = &ClientProxy1_0::parseMessage;
     if (recvInfo()) {
@@ -175,7 +175,7 @@ bool ClientProxy1_0::parseHandshakeMessage(const uint8_t *code)
 
 bool ClientProxy1_0::parseMessage(const uint8_t *code)
 {
-  if (memcmp(code, kMsgDInfo, 4) == 0) {
+  if (memcmp(code, kMsgDInfoBegin, 4) == 0) {
     if (recvInfo()) {
       m_events->addEvent(Event(m_events->forIScreen().shapeChanged(), getEventTarget()));
       return true;
@@ -380,7 +380,7 @@ bool ClientProxy1_0::recvInfo()
 {
   // parse the message
   int16_t x, y, w, h, dummy1, mx, my;
-  if (!ProtocolUtil::readf(getStream(), kMsgDInfo + 4, &x, &y, &w, &h, &dummy1, &mx, &my)) {
+  if (!ProtocolUtil::readf(getStream(), kMsgDInfoBegin + 4, &x, &y, &w, &h, &dummy1, &mx, &my)) {
     return false;
   }
   LOG((CLOG_DEBUG "received client \"%s\" info shape=%d,%d %dx%d at %d,%d", getName().c_str(), x, y, w, h, mx, my));
